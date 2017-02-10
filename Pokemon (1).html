@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PokeBase</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <style>
+        #height-row {
+        }
+
+        #height-row .col-xs-1 {
+            height: 25px;
+            background-color: #aaa;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container text-center">
+        <div class="row ">
+            <h1>Pokemon Height Comparison</h1>
+            <h4>Type in a number from 1 to 151 and see how tall your pokemon is compared to others</h4>
+        </div>
+        <div class="row">
+            <input type="text" id="mypokemon" placeholder="25">
+            <button id="myButton" class="btn btn-default">Search PokeBase</button>
+
+        </div>
+
+        <div id="pokemon_stats" class="row"></div>
+
+        <div class="row" id="height-row">
+            <div class="col-xs-1">
+            </div>
+            <div class="col-xs-1">
+            </div>
+            <div class="col-xs-1">
+            </div>
+            <div class="col-xs-1">
+            </div>
+            <div class="col-xs-1">
+            </div>
+            <div class="col-xs-1">
+            </div>
+            <div class="col-xs-1">
+            </div>
+            <div class="col-xs-1">
+            </div>
+            <div class="col-xs-1">
+            </div>
+            <div class="col-xs-1">
+            </div>
+            <div class="col-xs-1">
+            </div>
+            <div class="col-xs-1">
+            </div>
+        </div>
+
+    </div>
+    
+
+    
+
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script>
+    (function($) {
+        current_index = 0;
+        colors = {
+            electric: '#ffff00',
+            water:  '#33ccff',
+            fire: '#ff6600',
+            normal: '#999966',
+            fighting: '#ff1a1a',
+            psychic: '#cc33ff',
+            grass: '#33cc33',
+            ice: '#00ffff',
+            poison: '#006600',
+            ground: '#996633',
+            flying: '#ffcccc',
+            bug: '#009900',
+            rock: '#444444',
+            dragon: '#ff6600',
+            ghost: '#9900ff'
+        }
+
+        $("#myButton").on('click',function(){
+            var pokemon = $("#mypokemon").val();
+            var myurl = "http://pokeapi.co/api/v2/pokemon/"+pokemon;
+
+            $.ajax({
+                url: myurl,
+                data:"json",
+                success: function(data)
+                {
+                    var myoutput;
+                    var name = data["name"];
+                    var base_exp = data["base_experience"];
+                    var height = data["height"];
+                    var weight = data["weight"];
+                    var type = data.types["0"].type.name;
+                    var current_weather = 
+                    myoutput = "<ul>";
+                    myoutput += "<li>name: "+name;
+                    myoutput += "<li>base_exp: "+base_exp;
+                    myoutput += "<li>height:" + height;
+                    myoutput += "<li>weight:"+weight;
+                    myoutput += "<li>type:"+type;
+                    myoutput += "</ul>";
+                    //$("#pokemon_stats").html(myoutput);
+
+                    cur = $('#height-row .col-xs-1')[current_index++%12];
+                    cur = $(cur);
+                    cur.css('height', (height * 25) + 'px');
+                    cur.text(name + '\n' + 'height: ' + height + '\n' + 'type: ' + type);
+                    cur.css('background-color', colors[type]);
+                }
+
+            });
+        });
+
+
+
+
+})(jQuery);
+</script>
+</body>
+</html>
